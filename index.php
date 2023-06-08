@@ -1,4 +1,13 @@
 <?php
+$url = "https://mockapi.io/projects/6480e390f061e6ec4d49feb6";
+$usuarios =  "https://6480e390f061e6ec4d49feb5.mockapi.io/informacion";
+
+
+
+function traerUsuarios() {
+    global $url;
+}
+
 
 
 $credenciales["http"]["method"] = "POST";
@@ -23,7 +32,7 @@ $data = [
     "email" => $email,
     "horario" => $horario,
     "team" => $team,
-    "trainer" => $trainer,
+    "trainer" => $trainer
 ];
 
 $data = json_encode($data);
@@ -32,6 +41,10 @@ $config = stream_context_create($credenciales);
 $_DATA = file_get_contents("https://6480e390f061e6ec4d49feb5.mockapi.io/informacion", false, $config);
 
 print_r(json_decode($_DATA, true));
+
+
+
+
 ?>
 
 <!DOCTYPE html>
@@ -44,7 +57,6 @@ print_r(json_decode($_DATA, true));
     <title>Document</title>
     <link rel="stylesheet" href="styles.css" />
     <link rel="stylesheet" href="./bootstrap.css/bootstrap-grid.min.css" />
-    <script src="./bootstrap.js/bootstrap.min.js" defer></script>
 </head>
 
 <body>
@@ -135,7 +147,8 @@ print_r(json_decode($_DATA, true));
                                 <td class="contenido_tabla"><?php echo $email?></td>
                                 <td class="contenido_tabla"><?php echo $horario?></td>
                                 <td class="contenido_tabla"><?php echo $team?></td>
-                                <td class="contenido_tabla"><?php echo $trainer?> <input type="submit" value="arrieba"></td>
+                                <td class="contenido_tabla"><?php echo $trainer?>
+                                <td class="contenido_tabla"><input type="submit" value="&#11014;"></td>
                             </tr>
                         </tbody>
                     </table>
