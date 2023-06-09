@@ -35,7 +35,7 @@ function guardarUsuarios() {
     $credenciales["http"]["content"] = $data;
     $config = stream_context_create($credenciales);
     $_DATA = file_get_contents($url, false, $config);
-
+    json_decode($_DATA, true);
 
 }
 
@@ -46,9 +46,48 @@ function obtenerUsuarios() {
     $usuarios = json_decode($data, true);
     return $usuarios;
 }
+global $usuarioData;
+
+function buscarUsuario() {
+    global $apiUrl;
+    global $usuarioData;
+    $url = $apiUrl . "informacion";
+    $inputCedula = $_POST['cedula'];
+    $data = file_get_contents($url);
+    $usuarios = json_decode($data, true);
+    foreach($usuarios as $usuario) {
+        if ($inputCedula === $usuario['cc']) {
+            $usuarioData = $usuario;
+        }
+    };
+}
+
+function subirUsuario() {
+    global $apiUrl;
+    global $usuarioData;
+    $url = $apiUrl . "informacion";
+    $flecha = $_POST['flecha-subir'];
+    $cedula = $_POST['cedula-invisible'];
+    $data = file_get_contents($url);
+    $usuarios = json_decode($data, true);
+    foreach($usuarios as $usuario) {
+        if ($cedula === $usuario['cc']) {
+            $usuarioData = $usuario;
+        }
+    };
+
+}
 
 if (isset($_POST['guardar'])) {
     guardarUsuarios();
+}
+
+if (isset($_POST['buscar'])) {
+    buscarUsuario();
+}
+
+if (isset($_POST['flecha-subir'])) {
+    subirUsuario();
 }
 
 $usuarios = obtenerUsuarios();
@@ -60,10 +99,10 @@ $usuarios = obtenerUsuarios();
 <head>
     <meta charset="UTF-8" />
     <meta http-equiv="X-UA-Compatible" content="IE=edge" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
     <title>Document</title>
     <link rel="stylesheet" href="styles.css" />
-    <link rel="stylesheet" href="./bootstrap.css/bootstrap-grid.min.css" />
+    <link rel="stylesheet" href="./bootstrap.css/bootstrap-grid.min.css"/>
 </head>
 
 <body>
@@ -71,7 +110,7 @@ $usuarios = obtenerUsuarios();
         <form action="" method="POST">
             <div class="row">
                 <div class="col-6">
-                    <input type="text" class="form-control mt-3" name="nombre" placeholder="Nombre"/>
+                    <input type="text" class="form-control mt-3" name="nombre" placeholder="Nombre" value="<?php echo isset($usuarioData) ? $usuarioData['nombre'] : ""; ?>"/>
                 </div>
                 <div class="col-6">
                     <img src="https://media.licdn.com/dms/image/D563DAQFas8vErYi8iA/image-scale_191_1128/0/1681268367946?e=1686783600&v=beta&t=AxWQwwzzQ5dfcbg7RTf3_LAWFZUaEMWYY8pRfOr3MlM" alt="" class="img">
@@ -80,19 +119,19 @@ $usuarios = obtenerUsuarios();
 
             <div class="row">
                 <div class="col-6">
-                    <input type="text" class="form-control mt-3" name="apellido" placeholder="Apellidos" />
+                    <input type="text" class="form-control mt-3" name="apellido" placeholder="Apellidos" value="<?php  echo isset($usuarioData) ? $usuarioData['apellido'] : ""; ?>"/>
                 </div>
                 <div class="col-6">
-                    <input type="number" class="form-control mt-3" name="edad" placeholder="Edad" />
+                    <input type="number" class="form-control mt-3" name="edad" placeholder="Edad" value="<?php  echo isset($usuarioData) ? $usuarioData['edad'] : ""; ?>"/>
                 </div>
             </div>
 
             <div class="row">
                 <div class="col-6">
-                    <input type="text" class="form-control mt-3" name="direccion" placeholder="Direccion" />
+                    <input type="text" class="form-control mt-3" name="direccion" placeholder="Direccion" value="<?php  echo isset($usuarioData) ? $usuarioData['direccion'] : "";  ?>"/>
                 </div>
                 <div class="col-6">
-                    <input type="email" class="form-control mt-3" name="email" placeholder="Email" />
+                    <input type="email" class="form-control mt-3" name="email" placeholder="Email" value="<?php echo isset($usuarioData) ? $usuarioData['email'] : "";  ?>"/>
                 </div>
             </div>
 
@@ -100,7 +139,7 @@ $usuarios = obtenerUsuarios();
                 <div class="row">
                     <div class="col-6">
                         <label for="">Horario de Entrada: </label> <br>
-                        <input type="time" class="form-control mt-1" name="horario" placeholder="Horario de Entrada" />
+                        <input type="time" class="form-control mt-1" name="horario" placeholder="Horario de Entrada" value="<?php echo isset($usuarioData) ? $usuarioData['horario-entrada'] : "";  ?>"/>
                     </div>
                     <div class="col-6">
                         <input type="submit" value="✅" name="guardar" />
@@ -110,7 +149,7 @@ $usuarios = obtenerUsuarios();
 
                 <div class="row">
                     <div class="col-6">
-                        <input type="text" class="form-control mt-3" name="team" placeholder="Team"/>
+                        <input type="text" class="form-control mt-3" name="team" placeholder="Team" value="<?php  echo isset($usuarioData) ? $usuarioData['team'] : ""; ?>"/>
                     </div>
                     <div class="col-6">
                         <input type="submit" value="✏️" name="editar" />
@@ -120,10 +159,10 @@ $usuarios = obtenerUsuarios();
 
                 <div class="row">
                     <div class="col-6">
-                        <input type="text" class="form-control mt-3" name="trainer" placeholder="Trainer" />
+                        <input type="text" class="form-control mt-3" name="trainer" placeholder="Trainer" value="<?php echo isset($usuarioData) ? $usuarioData['trainer'] : "";  ?>"/>
                     </div>
                     <div class="col-6">
-                        <input type="number" class="form-control mt-3" name="cedula" placeholder="Cedula" />
+                        <input type="number" class="form-control mt-3" name="cedula" placeholder="Cedula" value="<?php echo isset($usuarioData) ? $usuarioData['cc'] : "";  ?>"/>
                     </div>
                 </div>
             </div>
@@ -156,7 +195,12 @@ $usuarios = obtenerUsuarios();
                                 <td class="contenido_tabla"><?php echo $usuario['horario-entrada']?></td>
                                 <td class="contenido_tabla"><?php echo $usuario['team']?></td>
                                 <td class="contenido_tabla"><?php echo $usuario['trainer']?></td>
-                                <td class="contenido_tabla"><input type="submit" value="&#11014;"/></td>
+                                <td class="contenido_tabla" >
+                                    <form action="" method="POST">
+                                    <input type=""  name="cedula-invisible"value="<?php echo $usuario['cc']?>">
+                                    <input type="submit" name="flecha-subir" value="&#11014;"/>
+                                    </form>
+                                </td>
                             </tr>
                             <?php endforeach; ?>
                         </tbody>
