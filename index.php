@@ -66,7 +66,6 @@ function subirUsuario() {
     global $apiUrl;
     global $usuarioData;
     $url = $apiUrl . "informacion";
-    $flecha = $_POST['flecha-subir'];
     $cedula = $_POST['cedula-invisible'];
     $data = file_get_contents($url);
     $usuarios = json_decode($data, true);
@@ -78,8 +77,18 @@ function subirUsuario() {
 
 }
 
+function actualizarUsuario($id) {
+
+
+}
+
 if (isset($_POST['guardar'])) {
     guardarUsuarios();
+}
+
+if (isset($_POST['editar'])) {
+    $id = $_POST['id'];
+    actualizarUsuario($id);
 }
 
 if (isset($_POST['buscar'])) {
@@ -187,7 +196,7 @@ $usuarios = obtenerUsuarios();
                         <tbody>
                             <?php foreach ($usuarios as $usuario): ?>
                             <tr>
-                                <td class="contenido_tabla"><?php echo $usuario['nombre']?></td>
+                                <td class="contenido_tabla"><?php echo $usuario['nombre']?><input type="hidden" name="id" value="<?php echo $usuario['id'] ?>"></td>
                                 <td class="contenido_tabla"><?php echo $usuario['apellido']?></td>
                                 <td class="contenido_tabla"><?php echo $usuario['direccion']?></td>
                                 <td class="contenido_tabla"><?php echo $usuario['edad']?></td>
