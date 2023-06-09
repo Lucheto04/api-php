@@ -1,8 +1,6 @@
 <?php
 $apiUrl = "https://6480e390f061e6ec4d49feb5.mockapi.io/";
 
-
-
 function guardarUsuarios() {
     global $apiUrl;
 
@@ -37,14 +35,25 @@ function guardarUsuarios() {
     $credenciales["http"]["content"] = $data;
     $config = stream_context_create($credenciales);
     $_DATA = file_get_contents($url, false, $config);
+
     print_r(json_decode($_DATA, true));
 }
 
+function obtenerUsuarios() {
+    global $apiUrl;
+    $url = $apiUrl . "informacion";
+    $data = file_get_contents($url);
+    $usuarios = json_decode($data, true);
+    return $usuarios;
+}
 
+if (isset($_POST['guardar'])) {
+    guardarUsuarios();
+}
 
+$usuarios = obtenerUsuarios();
 
 ?>
-
 <!DOCTYPE html>
 <html lang="en">
 
@@ -137,17 +146,19 @@ function guardarUsuarios() {
                             </tr>
                         </thead>
                         <tbody>
+                            <?php foreach ($usuarios as $usuario): ?>
                             <tr>
-                                <td class="contenido_tabla"><?php echo $nombre?></td>
-                                <td class="contenido_tabla"><?php echo $apellido?></td>
-                                <td class="contenido_tabla"><?php echo $direccion?></td>
-                                <td class="contenido_tabla"><?php echo $edad?></td>
-                                <td class="contenido_tabla"><?php echo $email?></td>
-                                <td class="contenido_tabla"><?php echo $horario?></td>
-                                <td class="contenido_tabla"><?php echo $team?></td>
-                                <td class="contenido_tabla"><?php echo $trainer?>
-                                <td class="contenido_tabla"><input type="submit" value="&#11014;"></td>
+                                <td class="contenido_tabla"><?php echo $usuario['nombre']?></td>
+                                <td class="contenido_tabla"><?php echo $usuario['apellido']?></td>
+                                <td class="contenido_tabla"><?php echo $usuario['direccion']?></td>
+                                <td class="contenido_tabla"><?php echo $usuario['edad']?></td>
+                                <td class="contenido_tabla"><?php echo $usuario['email']?></td>
+                                <td class="contenido_tabla"><?php echo $usuario['horario']?></td>
+                                <td class="contenido_tabla"><?php echo $usuario['team']?></td>
+                                <td class="contenido_tabla"><?php echo $usuario['trainer']?></td>
+                                <td class="contenido_tabla"><input type="submit" value="&#11014;"/></td>
                             </tr>
+                            <?php endforeach; ?>
                         </tbody>
                     </table>
                 </div>
