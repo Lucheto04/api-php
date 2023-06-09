@@ -1,46 +1,44 @@
 <?php
-$url = "https://mockapi.io/projects/6480e390f061e6ec4d49feb6";
-$usuarios =  "https://6480e390f061e6ec4d49feb5.mockapi.io/informacion";
+$apiUrl = "https://6480e390f061e6ec4d49feb5.mockapi.io/";
 
 
 
-function traerUsuarios() {
-    global $url;
+function guardarUsuarios() {
+    global $apiUrl;
+
+    $url = $apiUrl . "informacion";
+
+    $credenciales["http"]["method"] = "POST";
+    $credenciales["http"]["header"] = "Content-Type: application/json";
+
+    $nombre = $_POST['nombre'];
+    $apellido = $_POST['apellido'];
+    $edad = $_POST['edad'];
+    $cedula = $_POST['cedula'];
+    $direccion = $_POST['direccion'];
+    $email = $_POST['email'];
+    $horario = $_POST['horario'];
+    $team = $_POST['team'];
+    $trainer = $_POST['trainer'];
+
+    $data = [
+        "cc" => $cedula,
+        "nombre" => $nombre,
+        "apellido" => $apellido,
+        "edad" => $edad,
+        "direccion" => $direccion,
+        "email" => $email,
+        "horario" => $horario,
+        "team" => $team,
+        "trainer" => $trainer
+    ];
+
+    $data = json_encode($data);
+    $credenciales["http"]["content"] = $data;
+    $config = stream_context_create($credenciales);
+    $_DATA = file_get_contents($url, false, $config);
+    print_r(json_decode($_DATA, true));
 }
-
-
-
-$credenciales["http"]["method"] = "POST";
-$credenciales["http"]["header"] = "Content-Type: application/json";
-
-$nombre = $_POST['nombre'];
-$apellido = $_POST['apellido'];
-$edad = $_POST['edad'];
-$cedula = $_POST['cedula'];
-$direccion = $_POST['direccion'];
-$email = $_POST['email'];
-$horario = $_POST['horario'];
-$team = $_POST['team'];
-$trainer = $_POST['trainer'];
-
-$data = [
-    "cc" => $cedula,
-    "nombre" => $nombre,
-    "apellido" => $apellido,
-    "edad" => $edad,
-    "direccion" => $direccion,
-    "email" => $email,
-    "horario" => $horario,
-    "team" => $team,
-    "trainer" => $trainer
-];
-
-$data = json_encode($data);
-$credenciales["http"]["content"] = $data;
-$config = stream_context_create($credenciales);
-$_DATA = file_get_contents("https://6480e390f061e6ec4d49feb5.mockapi.io/informacion", false, $config);
-
-print_r(json_decode($_DATA, true));
 
 
 
