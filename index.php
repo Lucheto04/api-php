@@ -26,7 +26,7 @@ function guardarUsuarios() {
         "edad" => $edad,
         "direccion" => $direccion,
         "email" => $email,
-        "horario" => $horario,
+        "horario-entrada" => $horario,
         "team" => $team,
         "trainer" => $trainer
     ];
@@ -36,7 +36,7 @@ function guardarUsuarios() {
     $config = stream_context_create($credenciales);
     $_DATA = file_get_contents($url, false, $config);
 
-    print_r(json_decode($_DATA, true));
+
 }
 
 function obtenerUsuarios() {
@@ -153,7 +153,7 @@ $usuarios = obtenerUsuarios();
                                 <td class="contenido_tabla"><?php echo $usuario['direccion']?></td>
                                 <td class="contenido_tabla"><?php echo $usuario['edad']?></td>
                                 <td class="contenido_tabla"><?php echo $usuario['email']?></td>
-                                <td class="contenido_tabla"><?php echo $usuario['horario']?></td>
+                                <td class="contenido_tabla"><?php echo $usuario['horario-entrada']?></td>
                                 <td class="contenido_tabla"><?php echo $usuario['team']?></td>
                                 <td class="contenido_tabla"><?php echo $usuario['trainer']?></td>
                                 <td class="contenido_tabla"><input type="submit" value="&#11014;"/></td>
