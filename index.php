@@ -78,7 +78,39 @@ function subirUsuario() {
 }
 
 function actualizarUsuario($id) {
+    global $apiUrl;
+    $urlID = $apiUrl . "informacion" . "/$id";
 
+
+    $nombre = $_POST['nombre'];
+    $apellido = $_POST['apellido'];
+    $edad = $_POST['edad'];
+    $cedula = $_POST['cedula'];
+    $direccion = $_POST['direccion'];
+    $email = $_POST['email'];
+    $horario = $_POST['horario'];
+    $team = $_POST['team'];
+    $trainer = $_POST['trainer'];
+
+    $usuarioActualizado = [
+        "cc" => $cedula,
+        "nombre" => $nombre,
+        "apellido" => $apellido,
+        "edad" => $edad,
+        "direccion" => $direccion,
+        "email" => $email,
+        "horario-entrada" => $horario,
+        "team" => $team,
+        "trainer" => $trainer
+    ];
+
+    $data = json_encode($usuarioActualizado);
+    $credenciales["http"]["header"] = "Content-Type: application/json";
+    $credenciales["http"]["method"] = "PUT";
+    $credenciales["http"]["content"] = $data;
+    $config = stream_context_create($credenciales);
+    $_DATA = file_get_contents($urlID, false, $config);
+    json_decode($_DATA, true);
 
 }
 
@@ -120,6 +152,7 @@ $usuarios = obtenerUsuarios();
             <div class="row">
                 <div class="col-6">
                     <input type="text" class="form-control mt-3" name="nombre" placeholder="Nombre" value="<?php echo isset($usuarioData) ? $usuarioData['nombre'] : ""; ?>"/>
+                    <input type="text" class="form-control mt-3" name="id" placeholder="id" value="<?php echo isset($usuarioData) ? $usuarioData['id'] : ""; ?>"/>
                 </div>
                 <div class="col-6">
                     <img src="https://media.licdn.com/dms/image/D563DAQFas8vErYi8iA/image-scale_191_1128/0/1681268367946?e=1686783600&v=beta&t=AxWQwwzzQ5dfcbg7RTf3_LAWFZUaEMWYY8pRfOr3MlM" alt="" class="img">
@@ -196,7 +229,7 @@ $usuarios = obtenerUsuarios();
                         <tbody>
                             <?php foreach ($usuarios as $usuario): ?>
                             <tr>
-                                <td class="contenido_tabla"><?php echo $usuario['nombre']?><input type="hidden" name="id" value="<?php echo $usuario['id'] ?>"></td>
+                                <td class="contenido_tabla"><?php echo $usuario['nombre']?> 
                                 <td class="contenido_tabla"><?php echo $usuario['apellido']?></td>
                                 <td class="contenido_tabla"><?php echo $usuario['direccion']?></td>
                                 <td class="contenido_tabla"><?php echo $usuario['edad']?></td>
@@ -206,8 +239,8 @@ $usuarios = obtenerUsuarios();
                                 <td class="contenido_tabla"><?php echo $usuario['trainer']?></td>
                                 <td class="contenido_tabla" >
                                     <form action="" method="POST">
-                                    <input type=""  name="cedula-invisible"value="<?php echo $usuario['cc']?>">
-                                    <input type="submit" name="flecha-subir" value="&#11014;"/>
+                                        <input type=""  name="cedula-invisible" value="<?php echo $usuario['cc']?>">
+                                        <input type="submit" name="flecha-subir" value="&#11014;&#11014;"/>
                                     </form>
                                 </td>
                             </tr>
