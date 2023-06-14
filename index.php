@@ -165,7 +165,7 @@ $usuarios = obtenerUsuarios();
             <div class="row">
                 <div class="col-6">
                     <input type="text" class="form-control mt-3" name="nombre" placeholder="Nombre" value="<?php echo isset($usuarioData) ? $usuarioData['nombre'] : ""; ?>"/>
-                    <input type="text" class="form-control mt-3" name="id" placeholder="id" value="<?php echo isset($usuarioData) ? $usuarioData['id'] : ""; ?>"/>
+                    <input type="hidden" class="form-control mt-3" name="id" placeholder="id" value="<?php echo isset($usuarioData) ? $usuarioData['id'] : ""; ?>"/>
                 </div>
                 <div class="col-6">
                     <img src="https://media.licdn.com/dms/image/D563DAQFas8vErYi8iA/image-scale_191_1128/0/1681268367946?e=1686783600&v=beta&t=AxWQwwzzQ5dfcbg7RTf3_LAWFZUaEMWYY8pRfOr3MlM" alt="" class="img">
@@ -252,8 +252,8 @@ $usuarios = obtenerUsuarios();
                                 <td class="contenido_tabla"><?php echo $usuario['trainer']?></td>
                                 <td class="contenido_tabla" >
                                     <form action="" method="POST">
-                                        <input type=""  name="cedula-invisible" value="<?php echo $usuario['cc']?>">
-                                        <input type="submit" name="flecha-subir" value="&#11014;&#11014;"/>
+                                        <input type="hidden"  name="cedula-invisible" value="<?php echo $usuario['cc']?>">
+                                        <input type="submit" name="flecha-subir" value="&#11014;"/>
                                     </form>
                                 </td>
                             </tr>
