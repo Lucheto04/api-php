@@ -74,13 +74,11 @@ function subirUsuario() {
             $usuarioData = $usuario;
         }
     };
-
 }
 
 function actualizarUsuario($id) {
     global $apiUrl;
     $urlID = $apiUrl . "informacion" . "/$id";
-
 
     $nombre = $_POST['nombre'];
     $apellido = $_POST['apellido'];
@@ -112,6 +110,21 @@ function actualizarUsuario($id) {
     $_DATA = file_get_contents($urlID, false, $config);
     json_decode($_DATA, true);
 
+}
+
+function eliminarUsuario($id){
+    global $apiUrl;
+    $urlID = $apiUrl . "informacion" . "/$id";
+    $credenciales["http"]["header"] = "Content-Type: application/json";
+    $credenciales["http"]["method"] = "DELETE";
+    $config = stream_context_create($credenciales);
+    $_DATA = file_get_contents($urlID, false, $config);
+    json_decode($_DATA, true);
+}
+
+if (isset($_POST['eliminar'])) {
+    $id = $_POST['id'];
+    eliminarUsuario($id);
 }
 
 if (isset($_POST['guardar'])) {
